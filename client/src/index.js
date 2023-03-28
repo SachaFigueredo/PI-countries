@@ -3,13 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter} from 'react-router-dom'
+import {Provider} from 'react-redux'
+import store from '../src/Redux/Store'
+
+//provider:es un componente de orden superior que proporcion el STORE de redux a todos los componentes de react,
+//en el arbol de componentes.Esto nos permite acceder al estado de la aplicacion y despachar acciones desde cualquier componente
+//sin tener que pasar manualmente por el store como prop por todos los componentes
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+    <BrowserRouter>
+      <App /> 
+    </BrowserRouter>   
+  </React.StrictMode>
+  </Provider>,
+  
   document.getElementById('root')
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -1,0 +1,6 @@
+.select{
+    padding: 5px;
+    background-color: rgb(209, 173, 125);
+    border-color:black;
+    cursor: pointer;
+}

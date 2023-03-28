@@ -5,20 +5,19 @@ module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('Country', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull:false,
+      type: DataTypes.STRING(3),
+      allowNull: false,
       primaryKey: true
     },
-    nombre: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    imagen: {
+    flags: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    continente:{
+    continents:{
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -34,9 +33,9 @@ module.exports = (sequelize) => {
       type: DataTypes.FLOAT,
       allowNull: true
     },
-    poblacion: {
+    population: {
       type: DataTypes.INTEGER,
       allowNull: false
-    }
+    },
   });
 };

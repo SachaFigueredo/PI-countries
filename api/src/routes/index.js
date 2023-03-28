@@ -1,39 +1,69 @@
 const { Router } = require('express');
-const axios = require('axios')
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
-
+const { 
+    getCountries,
+    getCountriesByName,
+    getCountryById,
+    postActivity,
+    byActivities
+}= require('../../src/routes/controllers')
 const router = Router();
 
-// Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
 
-const getApiInfo = async () => {
-    const apiUrl = await axios.get("https://restcountries.com/v3/all")
-    const apiInfo = await apiUrl.data.map(el => {
-        return {
-            nombre: el.name.common,
-            imagen: el.flags[1],
-            continente: el.continents[0],
-            capital: el.capital? el.capital[0] : "capital no encontrado",
-            subregion: el.subregion? el.subregion : "subregion no encontrada",
-            area: el.area,
-            poblacion: el.population
-        };
-    });
-    return apiInfo;
-};
-const getDbInfo = async () => {
-    return await Country.findAll({
-        include: {
-            model: Activity,
-            attributes: ["id", "nombre", "dificltad", "duracion", "temporada"],
-            through:{
-                attributes: [],
-            },
+router.get('/', async function(req, res) {
+    const { name } = req.query;
+    try {
+        if(name){
+            const byNameCountries = await getCountriesByName(name)
+            byNameCountries.length?
+            res.status(200).json(byNameCountries):
+            res.status(404).json({error:'Server say:Error 404, Pais no encontrado'})
+            
+        } else {
+            const allCountries = await getCountries();
+            allCountries?
+            res.status(200).send(allCountries):
+            res.status(404).json({error:'Server say:Error 404, Pais no encontrado'})          
         }
-    })
-} 
+    } catch (err) {
+        res.status(404).json({error:err})
+    }
+})
+
+router.get('/:id', async function(req, res) {
+    const { id } = req.params;
+    try {
+        const countryByID = await getCountryById(id.toUpperCase());
+        countryByID?
+        res.status(200).json(countryByID):
+        res.status(404).json({error:'Error 404, Pais no encontrado'})
+    } catch (err) {
+        console.log({error:err})
+    }
+})
+
+
+router.post('/', async (req, res) => {
+    const { name, difficulty, duration, season, countries} = req.body;///controlado desde el front
+    console.log(name, difficulty, duration, season, countries)
+    try {
+        const newActivity = await postActivity(name, difficulty, duration, season, countries)
+        console.log(newActivity)
+        res.status(200).json(newActivity)
+    } catch (err) {
+        console.log({error:err})
+    }
+})
+
+router.get('/', async (req, res) => {
+    try {
+        const getActivities = await byActivities()
+        res.status(200).json(getActivities)
+    } catch (err) {
+        res.status(404).json({error:err})
+    }
+});
 
 module.exports = router;

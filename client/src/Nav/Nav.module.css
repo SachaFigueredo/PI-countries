@@ -1,0 +1,32 @@
+.Nav{
+    background-color: black;
+    display: flex;
+    justify-content:space-around;
+    height: 50px;
+}
+.hometitle{
+    top:-10px;
+    color: rgb(197, 149, 77);
+    display: inline;
+    font-style: italic;
+    font-variant: small-caps;
+    position: relative;
+}
+.button{
+    color: rgb(197, 149, 77);
+    top: 9px;
+    cursor: pointer;
+    border-radius: 12px;
+    font-style: italic;
+    background-color: rgb(15, 21, 53);
+    font-size: 24px;
+    position: relative;
+    font-weight: bold;
+    border-style: groove;
+}
+.button:hover{
+    opacity: 0.95;
+}
+.button:active{
+    transform: translate(6px);
+}
